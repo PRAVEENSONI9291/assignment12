@@ -1,4 +1,6 @@
 var form= document.getElementById('form');
+var appointments= document.getElementById('appointments');
+
 form.addEventListener('submit', addToLocalStorageAndPrint);
 
 function addToLocalStorageAndPrint(e){
@@ -15,17 +17,47 @@ function addToLocalStorageAndPrint(e){
     }
     console.log(myobj);
 
-    let myobj_string= JSON.stringify(myobj);
-    localStorage.setItem(email,myobj_string);
+    
 
-    let appointments= document.getElementById('appointments');
 
     var newele= document.createElement('li');
     newele.className= 'list-group-item';
-    newele.appendChild(document.createTextNode(`${name1} - ${email} - ${phone}`));
+    var newele2= document.createElement('span');
+    newele2.appendChild(document.createTextNode(`${name1} - ${email} - ${phone}`));
+    var newele3= document.createElement('button');
+    newele3.id= email;
 
-    appointments.appendChild(newele);
+    newele3.className= 'btn btn-danger btn-sm float-end delete';
+    newele3.appendChild(document.createTextNode('X'));
+
+    newele.appendChild(newele2);
+    newele.appendChild(newele3);
+
 
     
-
+   if(localStorage.getItem(email) !=null)
+   {
+      alert("This user already exist. If you want to re take the appointment then first delete the earlier appointment and then try again")
+   }
+   else{
+    appointments.appendChild(newele);
+    let myobj_string= JSON.stringify(myobj);
+    localStorage.setItem(email,myobj_string);
+   }
 }
+
+     appointments.addEventListener('click', removeList);
+
+     function removeList(e){
+        
+        
+        if(e.target.classList.contains('delete'))
+        {
+            var list= e.target.parentElement;
+            appointments.removeChild(list);
+            
+            localStorage.removeItem(e.target.id);
+            
+
+        }
+     }
