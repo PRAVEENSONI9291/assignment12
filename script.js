@@ -27,15 +27,25 @@ function addToLocalStorageAndPrint(e){
     var newele3= document.createElement('button');
     newele3.id= email;
 
-    newele3.className= 'btn btn-danger btn-sm float-end delete';
+    newele3.className= 'btn btn-danger btn-sm float-end delete me-1';
     newele3.appendChild(document.createTextNode('X'));
+
+    var newele4= document.createElement('button');
+    
+
+    newele4.className= 'btn btn-success btn-sm float-end edit me-1';
+    newele4.appendChild(document.createTextNode('Edit'));
 
     newele.appendChild(newele2);
     newele.appendChild(newele3);
+    newele.appendChild(newele4);
 
 
-    
-   if(localStorage.getItem(email) !=null)
+
+
+    if(email !="" && name1 !="" && phone !="")
+    {
+        if(localStorage.getItem(email) !=null)
    {
       alert("This user already exist. If you want to re take the appointment then first delete the earlier appointment and then try again")
    }
@@ -44,9 +54,12 @@ function addToLocalStorageAndPrint(e){
     let myobj_string= JSON.stringify(myobj);
     localStorage.setItem(email,myobj_string);
    }
+    }
+   
 }
 
      appointments.addEventListener('click', removeList);
+     appointments.addEventListener('click', editList);
 
      function removeList(e){
         
@@ -57,6 +70,31 @@ function addToLocalStorageAndPrint(e){
             appointments.removeChild(list);
             
             localStorage.removeItem(e.target.id);
+            
+
+        }
+     }
+
+     function editList(e){
+        
+        
+        if(e.target.classList.contains('edit'))
+        {
+            var list= e.target.parentElement;
+            
+
+            let myobj= JSON.parse(localStorage.getItem(e.target.previousElementSibling.id));
+            document.getElementById('name').value= myobj.name;
+            document.getElementById('email').value= myobj.email;
+            document.getElementById('mobile').value= myobj.phone;
+           
+            
+            localStorage.removeItem(e.target.previousElementSibling.id);
+            appointments.removeChild(list);
+
+
+            // console.log("edit clicked");
+            // console.log(e.target.previousElementSibling.id);
             
 
         }
